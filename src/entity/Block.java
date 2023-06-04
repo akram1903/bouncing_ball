@@ -30,9 +30,13 @@ public class Block extends Entity{
 		colisionHandler(gp.ball);
 		
 	}
+	
+	public boolean checkColision(Ball ball) {
+		if(rectangle.intersects(ball.rectangle))
+			collided = true;
+		return collided;
+	}
 	public void colisionHandler(Ball ball) {
-
-		if(rectangle.intersects(ball.rectangle)) {
 			collided = true;
 //			
 //			if((ball.x+ball.diameter>=x && ball.x <= x+width) /*|| (ball.x+ball.diameter>x && ball.x+ball.diameter < x+width)*/) {
@@ -44,7 +48,8 @@ public class Block extends Entity{
 //				System.out.println("Block collision B!");
 //			}
 	
-			if(x>=ball.x+ball.diameter || x+width<=ball.y) {
+			if((x>=ball.x+ball.diameter || x+width<=ball.y)&&
+					((y+10>ball.y+ball.diameter&&y<ball.y+ball.diameter)||(y+height<ball.y&&y+height-10<ball.y))) {
 				ball.speedY = -1*ball.speedY;
 				System.out.println("Block collision Y!");
 			}
@@ -55,7 +60,6 @@ public class Block extends Entity{
 //			ball.speedX = -ball.speedX;
 //			ball.speedY = -ball.speedY;
 				
-		}
 				
 	}
 

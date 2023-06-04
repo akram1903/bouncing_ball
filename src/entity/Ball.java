@@ -10,7 +10,7 @@ import main.GamePanel;
 
 public class Ball extends Entity{
 	private final int constSpeed = 7;
-	public final int diameter = 60;
+	public final int diameter = 20;
 	public final int coolingTime = 100/*millisecs*/;
 	//public long startCoolingTime = 0;
 	public Ball(GamePanel gp) {
@@ -29,7 +29,7 @@ public class Ball extends Entity{
 	@Override
 	public void getImage() {
 
-		image1 = new ImageIcon("D:\\Eclipse workspace\\bouncing_ball_game\\res\\ball.png").getImage();
+		image1 = new ImageIcon("D:\\Eclipse workspace\\bouncing_ball_game\\res\\ball20.png").getImage();
 
 	}
 	@Override
@@ -47,11 +47,9 @@ public class Ball extends Entity{
 
 	private void barCollisionHandle(Player player) {
 		
-//		if(speedY>0 && y+diameter>player.y && (player.x < x && x < player.x+player.width)
-//				||(x+diameter < player.x+width && x+diameter > player.x)){
+		//__________minor bug exists_________
+		
 		if(rectangle.intersects(player.rectangle)) {
-			//System.out.println("Bar collision detection true");
-			//System.out.println("ball collided with bar");
 			int playerCenterX = (int)player.rectangle.getCenterX();
 			int ballCenterX = (int)rectangle.getCenterX();
 			double speedAbs = Math.sqrt(speedX*speedX+speedY*speedY);

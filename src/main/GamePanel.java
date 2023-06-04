@@ -72,7 +72,6 @@ public class GamePanel extends JPanel implements Runnable{
 		retry.setVisible(true);
 		retry.setBounds(70,100,200,50);
 		this.add(retry);
-		
 		ball = new Ball(this);
 		player = new Player(this, keyH);
 		blocks = new ArrayList<Block>();
@@ -135,10 +134,10 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		while(bIterator.hasNext()) {
 			b = bIterator.next();
-			if(b.collided)
+			if(b.checkColision(ball)) {
+				b.colisionHandler(ball);
 				bIterator.remove();
-			else
-				b.update();
+			}	
 		}
 	}
     private void performStartMusic() { 
