@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,7 +27,7 @@ import entity.Ball;
 import entity.Block;
 import entity.Player;
 
-public class GamePanel extends JPanel implements Runnable{
+public class GamePanel extends JPanel implements Runnable, ActionListener{
 	/**
 	 * 
 	 */
@@ -49,10 +51,7 @@ public class GamePanel extends JPanel implements Runnable{
 	Thread gameThread;
 	KeyHandler keyH = new KeyHandler();
 	
-	int playerX = 100;
-	int playerY = 100;
-	int ballX = 500;
-	int ballY = 300;
+	int playerX,playerY  ,  ballX,ballY;
 	int playerSpeed = 10;
 	
 	public Player player;
@@ -66,18 +65,19 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	
 	GamePanel(){
+		makeStartValues();
 		retry = new JButton("Retry");
 		retry.setBackground(Color.gray);
 		retry.setLocation(10, 10);
 		retry.setVisible(true);
 		retry.setBounds(70,100,200,50);
+		retry.addActionListener(this);
+		retry.setFocusable(false);
 		this.add(retry);
 		ball = new Ball(this);
 		player = new Player(this, keyH);
 		blocks = new ArrayList<Block>();
-		for(int i=0;i<10;i++)
-			for(int j=0;j<5;j++)
-				blocks.add( new Block(this,60*i,60*j,blockDimension,blockDimension));
+		this.generateBlocks();
 
 		this.setPreferredSize(new Dimension(screenWidth,screenHeight));
 		this.setBackground(Color.white);
@@ -128,16 +128,20 @@ public class GamePanel extends JPanel implements Runnable{
 		player.update();
 		ball.update();
 		bIterator =blocks.iterator();
-		
+		Block previous = null;
 		if(blocks.isEmpty())
 			win = true;
 		
 		while(bIterator.hasNext()) {
 			b = bIterator.next();
 			if(b.checkColision(ball)) {
-				b.colisionHandler(ball);
+				if(previous == null ||(previous!= null && !previous.collided)) {
+					b.colisionHandler(ball);	
+				}
 				bIterator.remove();
 			}	
+			previous = b;
+
 		}
 	}
     private void performStartMusic() { 
@@ -204,7 +208,7 @@ public class GamePanel extends JPanel implements Runnable{
 		bIterator =blocks.iterator();
 		while(bIterator.hasNext())
 			bIterator.next().draw(g2d);
-		
+		//g2d.fillRect(0, 0, 200, 300);
 		player.draw(g2d);
 		
 		
@@ -218,9 +222,30 @@ public class GamePanel extends JPanel implements Runnable{
 			char[] c = "GAME OVER!".toCharArray();
 			g2d.drawChars(c, 0, c.length, 150, 350);
 		}
-		
+		retry.repaint();
 		
 		g2d.dispose();
 	}
-
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource()==retry) {
+			System.out.println("retry button clicked");
+			volume.setValue(-80f);
+			win = false;lose = false;
+			this.makeStartValues();
+			this.generateBlocks();
+			this.run();
+		}
+	}	
+	private void makeStartValues() {
+		ball = new Ball(this);
+		player = new Player(this,keyH);
+	}
+	private void generateBlocks() {
+		
+		blocks.removeAll(blocks);
+		for(int i=0;i<10;i++)
+			for(int j=0;j<5;j++)
+				blocks.add( new Block(this,60*i,60*j,blockDimension,blockDimension));
+		}
 }

@@ -20,8 +20,8 @@ public class Ball extends Entity{
 	}
 	
 	public void setDefaultValues() {
-		x = 300;
-		y = 200;
+		x = 400;
+		y = 560;
 		speedX = (int)(constSpeed*Math.cos(Math.PI/4));
 		speedY = (int)(constSpeed*Math.cos(Math.PI/4));
 		rectangle = new Rectangle(x,y,diameter,diameter);

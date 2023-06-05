@@ -48,8 +48,9 @@ public class Block extends Entity{
 //				System.out.println("Block collision B!");
 //			}
 	
-			if((x>=ball.x+ball.diameter || x+width<=ball.y)&&
-					((y+10>ball.y+ball.diameter&&y<ball.y+ball.diameter)||(y+height<ball.y&&y+height-10<ball.y))) {
+//			if((x>=ball.x+ball.diameter || x+width<=ball.y)&&
+//					((y+10>ball.y+ball.diameter&&y<ball.y+ball.diameter)||(y+height<ball.y&&y+height-10<ball.y))) {
+			if(y+height/12>=ball.y+ball.diameter || y+height-height/12 <= ball.y){
 				ball.speedY = -1*ball.speedY;
 				System.out.println("Block collision Y!");
 			}
